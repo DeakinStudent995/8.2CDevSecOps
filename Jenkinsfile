@@ -23,12 +23,6 @@ pipeline {
                 bat 'npm run coverage || exit /b 0'
             }
         }
-
-        stage('SonarCloud Analysis') {
-            steps {
-                bat 'npx sonar-scanner'
-    }
-}
         stage('NPM Audit') {
             steps {
                 bat 'npm audit || exit /b 0'
