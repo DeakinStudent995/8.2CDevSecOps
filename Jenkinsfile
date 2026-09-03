@@ -24,6 +24,11 @@ pipeline {
             }
         }
 
+        stage('SonarCloud Analysis') {
+            steps {
+                bat 'npx sonar-scanner'
+    }
+}
         stage('NPM Audit') {
             steps {
                 bat 'npm audit || exit /b 0'
@@ -31,13 +36,17 @@ pipeline {
         }
     }
 
-    post {
-        success {
-            echo 'Pipeline completed successfully.'
-        }
+post {
+    success {
+        mail to: 's225171995@deakin.edu.au',
+             subject: "Jenkins Build Successful: ${env.JOB_NAME}",
+             body: "Build ${env.BUILD_NUMBER} completed successfully."
+    }
 
-        failure {
-            echo 'Pipeline failed. Check the Console Output.'
+    failure {
+        mail to: 's225171995@deakin.edu.au',
+             subject: "Jenkins Build Failed: ${env.JOB_NAME}",
+             body: "Build ${env.BUILD_NUMBER} failed. Check Jenkins Console Output."
         }
     }
 }
